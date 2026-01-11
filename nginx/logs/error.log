@@ -1,0 +1,90 @@
+2026/01/09 15:34:58 [error] 24896#8196: *5 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/_auth_check"
+2026/01/09 15:36:53 [notice] 37772#6348: signal process started
+2026/01/09 15:41:14 [notice] 31228#29800: signal process started
+2026/01/09 15:41:16 [notice] 19352#31064: signal process started
+2026/01/09 15:53:39 [notice] 38500#18664: signal process started
+2026/01/09 15:54:26 [notice] 31268#35916: signal process started
+2026/01/09 16:05:59 [notice] 22660#25956: signal process started
+2026/01/09 16:06:05 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:06 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:06 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:06 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:06 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:06 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:07 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:07 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:07 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:06:07 [error] 24896#8196: *74 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:12:23 [notice] 25260#5468: signal process started
+2026/01/09 16:14:22 [notice] 24812#1292: signal process started
+2026/01/09 16:14:28 [error] 24896#8196: *122 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/1.1", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 16:15:23 [notice] 6628#35916: signal process started
+2026/01/09 16:16:33 [notice] 31748#23756: signal process started
+2026/01/09 16:57:28 [warn] 23924#20348: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:57:28 [notice] 23924#20348: signal process started
+2026/01/09 16:57:28 [error] 23924#20348: OpenEvent("Global\ngx_reopen_33756") failed (2: The system cannot find the file specified)
+2026/01/09 16:58:15 [warn] 4208#16676: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:15 [notice] 4208#16676: signal process started
+2026/01/09 16:58:15 [error] 4208#16676: OpenEvent("Global\ngx_reopen_33756") failed (2: The system cannot find the file specified)
+2026/01/09 16:58:22 [warn] 4412#16468: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:22 [warn] 6800#17516: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:22 [warn] 38996#28184: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:22 [warn] 13804#32192: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:22 [warn] 31348#8576: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:22 [warn] 728#32596: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:22 [warn] 25492#26328: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:22 [warn] 2448#9756: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:58:22 [warn] 39448#12244: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:55 [warn] 21940#8100: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:55 [notice] 21940#8100: signal process started
+2026/01/09 16:59:55 [warn] 12572#6068: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:55 [warn] 10084#21640: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:55 [warn] 22012#27108: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:55 [warn] 25584#31012: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:55 [warn] 8336#8172: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:56 [warn] 37876#33828: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:56 [warn] 12764#36364: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 16:59:56 [warn] 33904#39072: the "listen ... http2" directive is deprecated, use the "http2" directive instead in C:\nginx-1.28.1/conf/nginx.conf:50
+2026/01/09 17:01:57 [notice] 12460#11056: signal process started
+2026/01/09 17:02:10 [error] 2004#37056: *3 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/2.0", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 17:29:12 [notice] 30828#11996: signal process started
+2026/01/09 17:31:20 [notice] 16808#21252: signal process started
+2026/01/09 17:34:31 [error] 34388#19776: *102 CreateFile() "C:\nginx-1.28.1/html/favicon.ico" failed (2: The system cannot find the file specified), client: 127.0.0.1, server: localhost, request: "GET /favicon.ico HTTP/2.0", host: "localhost", referrer: "https://localhost/api/"
+2026/01/09 17:43:42 [emerg] 1#1: host not found in upstream "auth_service:3333" in /etc/nginx/nginx.conf:42
+2026/01/09 17:43:50 [emerg] 1#1: open() "/etc/nginx/logs/access.log" failed (2: No such file or directory)
+2026/01/09 17:46:18 [emerg] 1#1: open() "/etc/nginx/logs/access.log" failed (2: No such file or directory)
+2026/01/09 17:51:21 [emerg] 1#1: open() "/etc/nginx/tmp/nginx.pid" failed (2: No such file or directory)
+2026/01/09 17:52:23 [emerg] 1#1: open() "/etc/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2026/01/09 17:52:42 [emerg] 1#1: open() "/etc/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2026/01/09 17:52:50 [emerg] 1#1: open() "/etc/nginx/logs/nginx.pid" failed (2: No such file or directory)
+2026/01/09 17:56:35 [error] 35#35: *6 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET / HTTP/2.0", host: "localhost"
+2026/01/09 17:56:47 [error] 35#35: *6 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET / HTTP/2.0", host: "localhost"
+2026/01/09 17:59:01 [error] 23#23: *4 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET / HTTP/2.0", host: "localhost"
+2026/01/09 21:30:25 [error] 23#23: *4 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET / HTTP/2.0", host: "localhost"
+2026/01/09 21:30:25 [error] 23#23: *4 open() "/etc/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET /favicon.ico HTTP/2.0", host: "localhost", referrer: "https://localhost/"
+2026/01/09 21:30:29 [error] 25#25: *6 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/1.1", subrequest: "/internal/auth/verify", upstream: "http://172.18.0.5:3333/auth/verify", host: "localhost"
+2026/01/09 21:30:29 [error] 25#25: *6 auth request unexpected status: 500 while sending to client, client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/1.1", host: "localhost"
+2026/01/09 21:36:07 [error] 22#22: *122 open() "/etc/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET /favicon.ico HTTP/2.0", host: "localhost", referrer: "https://localhost/api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c"
+2026/01/09 21:37:15 [error] 24#24: *5 "/etc/nginx/html/index.html" is not found (2: No such file or directory), client: 172.18.0.1, server: localhost, request: "GET / HTTP/2.0", host: "localhost"
+2026/01/10 14:02:44 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:194
+2026/01/10 14:03:12 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:194
+2026/01/10 14:03:20 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:194
+2026/01/10 14:29:10 [error] 30#30: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 127.0.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", subrequest: "/internal/auth/verify", upstream: "http://172.18.0.5:3333/auth/verify", host: "localhost"
+2026/01/10 14:29:10 [error] 30#30: *1 auth request unexpected status: 502 while sending to client, client: 127.0.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 14:29:17 [error] 33#33: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", subrequest: "/internal/auth/verify", upstream: "http://172.18.0.5:3333/auth/verify", host: "localhost"
+2026/01/10 14:29:17 [error] 33#33: *5 auth request unexpected status: 502 while sending to client, client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 14:29:30 [error] 33#33: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", subrequest: "/internal/auth/verify", upstream: "http://172.18.0.5:3333/auth/verify", host: "localhost"
+2026/01/10 14:29:30 [error] 33#33: *5 auth request unexpected status: 502 while sending to client, client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 14:29:38 [error] 35#35: *9 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/1.1", subrequest: "/internal/auth/verify", upstream: "http://172.18.0.5:3333/auth/verify", host: "localhost"
+2026/01/10 14:29:38 [error] 35#35: *9 auth request unexpected status: 502 while sending to client, client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/1.1", host: "localhost"
+2026/01/10 15:27:16 [error] 33#33: *53 limiting requests, excess: 10.120 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:29:21 [error] 31#31: *83 limiting requests, excess: 10.360 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:30:02 [error] 31#31: *117 limiting requests, excess: 10.560 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:30:20 [error] 32#32: *150 limiting requests, excess: 10.700 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:37:19 [emerg] 1#1: unknown "remaining" variable
+2026/01/10 15:40:42 [error] 34#34: *7 limiting requests, excess: 5.840 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:40:42 [error] 36#36: *8 limiting requests, excess: 5.840 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:40:42 [error] 32#32: *21 limiting requests, excess: 5.740 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:40:42 [error] 31#31: *20 limiting requests, excess: 5.720 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:40:42 [error] 38#38: *19 limiting requests, excess: 5.740 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"
+2026/01/10 15:40:42 [error] 31#31: *22 limiting requests, excess: 5.700 by zone "api_limit", client: 172.18.0.1, server: localhost, request: "GET /api/analyz/e6968adf-654f-4de9-9c69-5925ac5d7b4c HTTP/2.0", host: "localhost"

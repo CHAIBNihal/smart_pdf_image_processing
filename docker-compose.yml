@@ -1,0 +1,155 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    command: 
+      - --lower_case_table_names=1
+      - --default-authentication-plugin=mysql_native_password
+      - --max-connections=200
+      - --wait-timeout=28800
+      - --interactive-timeout=28800
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 20s
+      retries: 10
+      start_period: 40s
+    networks:
+      - app-network
+  nginx:
+    image: nginx:alpine
+    container_name: api-gateway
+    ports: 
+     - "80:80"
+     - "443:443"
+    volumes:
+     - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+     - ./nginx/ssl:/etc/nginx/ssl:ro
+     - ./nginx/logs:/var/log/nginx
+    depends_on:
+      - ia_service
+      - auth_service
+    networks:
+      - app-network
+
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - app-network
+
+  ia_service:
+    build:
+      context: ./ia-service
+    container_name: ia-service
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: mysql+pymysql://fastapi:fastapi123@mysql:3306/fastapp
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./ia-service:/app
+    networks:
+      - app-network
+
+  celery_worker:
+    build:
+      context: ./ia-service
+      dockerfile: Dockerfile
+    container_name: celery-worker
+    command: celery -A Celery.celery_app worker --loglevel=info --concurrency=4
+    environment:
+      DATABASE_URL: mysql+pymysql://fastapi:fastapi123@mysql:3306/fastapp
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      PYTHONPATH: /app
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./ia-service:/app
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  prisma_migrate:
+    build:
+      context: ./auth-service
+      target: builder  # ⭐ Utilise l'étape builder qui a tous les outils
+    container_name: auth-prisma-migrate
+    environment:
+      DATABASE_URL: mysql://fastapi:fastapi123@mysql:3306/testapp
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: sh -c "sleep 15 && npx prisma generate && npx prisma migrate deploy"
+    restart: "no"
+    volumes:
+      - ./auth-service/prisma:/app/prisma
+      - ./auth-service/package.json:/app/package.json
+      - ./auth-service/package-lock.json:/app/package-lock.json
+    networks:
+      - app-network
+
+  auth_service:
+    build:
+      context: ./auth-service
+    container_name: auth-service
+    ports:
+      - "3333:3333"
+    environment:
+      DATABASE_URL: mysql://fastapi:fastapi123@mysql:3306/testapp
+      PORT: 3333
+      JWT_SECRET: super_secret_key_123
+      GOOGLE_CLIENT_ID: 133693604786-u95a96cvo2kcjc2k8ogt9hvp8hh03h68.apps.googleusercontent.com
+      GOOGLE_SECRET: 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
+      GOOGLE_CALLBACK_URL: http://localhost:3333/auth/google/callback
+      SUPABASE_URL: https://hvogczhnmzljdyubevqk.supabase.co
+      SUPABASE_KEY: sb_publishable_v0KsRDWh2Woair-WzMHCvA_e2-OrAKe
+      SUPABASE_STORAGE_BUCKET: uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      prisma_migrate:
+        condition: service_completed_successfully  # ⭐ Attend que la migration soit terminée
+    volumes:
+      - ./auth-service:/app
+      # - /app/node_modules  # ⭐ Exclut node_modules
+    networks:
+      - app-network
+    sysctls:
+    - net.ipv6.conf.all.disable_ipv6=1  # ⭐ Désactive IPv6
+    - net.ipv6.conf.default.disable_ipv6=1
+    - net.ipv6.conf.lo.disable_ipv6=1
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
