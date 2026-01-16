@@ -48,7 +48,7 @@ class AnalyzService:
         return analyz
     
     # Récuperer tous les analayz d'un client :
-    def get_all_analyz_by_client(self, client_id: str, db: Session) -> List[models.AnalyzHistory]:
+    async def get_all_analyz_by_client(self, client_id: str, db: Session) -> List[models.AnalyzHistory]:
        
         client_analyz = db.query(models.AnalyzHistory).filter(
             models.AnalyzHistory.clientId == client_id
