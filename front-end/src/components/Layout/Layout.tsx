@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Home, Upload, Clock, User, LogOut, ChevronRight, Bell, CreditCard } from "lucide-react";
+import { Menu, X, Home, Upload, Clock, User, LogOut, ChevronRight, Bell, CreditCard, CloudUpload } from "lucide-react";
 import { AuthStore } from "../../Store/auth/AuthStore";
 import { useNavigate } from "react-router-dom";
 
@@ -32,6 +32,7 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
   const menuItems = [
     { name: "Dashboard", path: "/dashboard", role: "primary", icon: Home },
     { name: "Téléchargements", path: "/uploads", role: "primary", icon: Upload },
+    {name:"Télécharger", path:"/upload", role:"primary", icon: CloudUpload},
     { name: "Historique", path: "/history", role: "primary", icon: Clock },
     {name : "Facturation", path : "/billing", role: "primary", icon: CreditCard},
     { name: "Profile", path: "/profile", role: "secondary", icon: User },
@@ -48,7 +49,6 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
   const handleMenuClick = (item: { name: string; path: string }) => {
     setActiveItem(item.name);
 
-    // If the item is Déconnexion, perform logout and redirect to login
     if (item.name === "Déconnexion") {
       try {
         logout();
@@ -229,7 +229,7 @@ const Layout: React.FC<ILayoutProps> = ({ children, title }) => {
         </header>
 
         {/* Main Content */}
-        <main className="p-2 md:p-4 lg:p-6">{children}</main>
+        <main className="p-2 md:p-4 lg:p-6 overflow-y-auto" style={{ height: 'calc(100vh - 73px)' }}>{children}</main>
       </div>
     </div>
   );

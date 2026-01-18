@@ -38,7 +38,7 @@ const Dashboard = () => {
           <UploadTable />
         </div>
         <div className="px-4 py-2 rounded-lg border shadow-sm shadow-neutral-950 border-neutral-700 ">
-          <div className="flex justify-between items-center pb-4 pt-1">
+          <div className="flex justify-between items-center  pt-1">
             <p className="font-semibold text-start   text-slate-400 pt-1">
               Dernières analyses
             </p>

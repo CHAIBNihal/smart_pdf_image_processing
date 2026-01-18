@@ -100,7 +100,7 @@ services:
   prisma_migrate:
     build:
       context: ./auth-service
-      target: builder  # ⭐ Utilise l'étape builder qui a tous les outils
+      target: builder  
     container_name: auth-prisma-migrate
     environment:
       DATABASE_URL: mysql://fastapi:fastapi123@mysql:3306/testapp

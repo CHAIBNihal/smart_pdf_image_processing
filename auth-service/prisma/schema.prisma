@@ -5,26 +5,24 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  
 }
 
 model uploadfile {
-  id        String  @id  @default(uuid())
+  id        String  @id @default(uuid())
   upload_id String
   file      String? @db.VarChar(700)
-  uploads   uploads @relation(fields: [upload_id], references: [id], map: "uploadFile_upload_id_fkey")
-  isLast   Boolean  @default(false)
+  isLast    Boolean @default(false)
+  uploads   uploads @relation(fields: [upload_id], references: [id], map: "uploadFile_upload_id_fkey", onDelete: Cascade)
+
   @@index([upload_id], map: "uploadFile_upload_id_fkey")
 }
 
 model uploads {
   id         String       @id @default(uuid())
   motif      String?
-  clientId   String
-  
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
-
+  clientId   String
   uploadfile uploadfile[]
   user       user         @relation(fields: [clientId], references: [id], map: "Uploads_clientId_fkey")
 
@@ -32,7 +30,7 @@ model uploads {
 }
 
 model user {
-  id             String    @id  @default(uuid())
+  id             String    @id @default(uuid())
   Role           user_Role @default(USER)
   fullName       String
   email          String    @unique(map: "User_email_key")

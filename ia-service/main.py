@@ -18,21 +18,11 @@ app = FastAPI(
     root_path="/api"  # IMPORTANT : FastAPI est servi sous /api via Nginx
 )
 
-# Configuration CORS - doit matcher avec votre frontend et Nginx
-origins = [
-    "http://localhost:3000",       # Si vous avez un dev server React/Next séparé
-    "https://localhost:3000",      # HTTPS version for secure connections
-    "http://localhost",
-    "https://localhost",
-    "http://127.0.0.1:3000",
-    "https://127.0.0.1:3000",
-    "http://127.0.0.1",
-    "https://127.0.0.1",
-]
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["http://localhost:3000"], 
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=[

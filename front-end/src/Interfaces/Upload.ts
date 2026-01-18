@@ -7,6 +7,12 @@ export interface IUploads{
     createdAt : string;
     updatedAt : string;
 }
+export interface IUploadFile{
+    id :string;
+    upload_id :string;
+    file : string;
+    isLast : boolean
+}
 
 interface IUploadsUser{
     id : string;
@@ -21,4 +27,12 @@ export interface IUserUploadsResponse{
     uploads : IUploadsUser[];
     count: number
 }
+export interface ICreateUploadResponse{
+    upload : IUploads;
+    success : boolean;
+}
 
+export interface IUploadFileReponse{
+    message :string;
+    data : IUploadFile
+}
