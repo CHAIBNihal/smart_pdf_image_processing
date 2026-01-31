@@ -1,11 +1,11 @@
 🚀 Architecture Microservices - Plateforme Complète
 
 
-📋 Vue d'Ensemble du Projet
+# 📋 Vue d'Ensemble du Projet
 Cette plateforme microservices offre une solution complète avec trois services principaux : authentification + exportation PDF/Image, traitement IA et paiements. Chaque service est conçu pour être indépendant, scalable et maintenable.
 
 
-🏗️ Architecture Technique
+# 🏗️ Architecture Technique
 
 🌐 Service d'Authentification + Exportation PDF/Image (NestJS)
 Port : 3333
@@ -61,7 +61,7 @@ Compression et caching
 
 Logging centralisé
 
-🚀 Démarrage Rapide
+# 🚀 Démarrage Rapide
 
 Prérequis
 # Outils requis
@@ -71,13 +71,13 @@ Prérequis
 - Java 21+ (pour paiement)
 - Git
 
-1. Cloner le projet:
+# 1. Cloner le projet:
 https://github.com/CHAIBNihal/smart_pdf_image_processing.git
 cd smart_pdf_image_processing
 
 
-2. Configuration de l'environnement:
-# .env ==> auth-service 
+# 2. Configuration de l'environnement:
+.env ==> auth-service 
 PORT=3333
 DATABASE_URL=mysql://user:password@mysql:3306/db_name?connection_limit=10&pool_timeout=30&connect_timeout=10
 JWT_SECRET=your_secret_key_here
@@ -92,7 +92,7 @@ SUPABASE_STORAGE_BUCKET=your_s3_bucket_name
 
 
 
-# .env ==> ia-service 
+#.env ==> ia-service 
 GROQ_API_KEY="your_LLM_model_key"
 DATABASE_URL=mysql+pymysql://user:password@mysql:3306/db_name
 HUGGINGFACEHUB_API_TOKEN=hugging_face_api_key
@@ -105,15 +105,15 @@ CELERY_RESULT_BACKEND=redis://redis:6379/2
 
 
 
-3. Démarrer avec Docker:
-# Lancer tous les services
+# 3. Démarrer avec Docker:
+ Lancer tous les services:
 docker-compose up -d
 
-# Vérifier l'état
+ Vérifier l'état : 
 docker-compose ps
 
 
-4. Démarrer manuellement chaque service:
+# 4. Démarrer manuellement chaque service:
 
 Service Auth
 cd auth-service
@@ -126,7 +126,7 @@ Service IA
 cd ia-service
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# ou venv\Scripts\activate  # Windows
+ou venv\Scripts\activate  # Windows
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 
@@ -136,7 +136,7 @@ cd payment-service
 ./mvnw spring-boot:run
 
 
-5 - Commande  Zookeeper + Kafka  
+# 5 - Commande  Zookeeper + Kafka  
 
 docker run --name zookeeper `
   -p 2181:2181 `
