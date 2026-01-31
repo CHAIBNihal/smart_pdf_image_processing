@@ -1,18 +1,9 @@
 🚀 Architecture Microservices - Plateforme Complète
+
+
 📋 Vue d'Ensemble du Projet
 Cette plateforme microservices offre une solution complète avec trois services principaux : authentification + exportation PDF/Image, traitement IA et paiements. Chaque service est conçu pour être indépendant, scalable et maintenable.
 
-┌─────────────────────────────────────────────────────────────┐
-│                   Microservices Architecture                │
-├────────────────┬──────────────────┬─────────────────────────┤
-│  Service Auth  │  Service IA      │  Service Paiement       │
-│  (NestJS)      │  (FastAPI)       │  (Spring Boot)          │
-├────────────────┼──────────────────┼─────────────────────────┤
-│  Supabase      │  Celery          │  Stripe                 │
-│  MySQL         │  Redis           │  Kafka                  │
-│  Prisma        │  MySQL           │  MySQL                  │
-│  S3 Storage    │  TensorFlow      │  Webhook                │
-└────────────────┴──────────────────┴─────────────────────────┘
 
 🏗️ Architecture Technique
 
@@ -39,7 +30,7 @@ File de messages Redis pour les tâches
 Modèles de machine learning (LLM via Groq, HuggingFace)
 
 API REST pour analyses et prédictions
-======================================================
+
 
 
 💰 Service Paiement (Spring Boot)
@@ -70,41 +61,6 @@ Compression et caching
 
 Logging centralisé
 
-📁 Structure du Projet
-
-smart_pdf_image_processing/
-├── auth-service/
-│   ├── src/
-│   ├── prisma/
-│   ├── .env.example
-│   ├── Dockerfile
-│   └── docker-compose.yml
-├── ia-service/
-│   ├── analyz/
-│   ├── celery/
-│   ├── ChatModel/
-│   ├── core/
-│   ├── database/
-│   ├── Entity/
-│   ├── extrernes_api/
-│   ├── helpers/
-│   ├── Redis/
-│   ├── api.py
-│   ├── main.py
-│   ├── requirements.txt
-│   ├── .env.example
-│   ├── Dockerfile
-│   └── docker-compose.yml
-├── payment-service/
-│   ├── src/main/java/
-│   ├── Dockerfile
-│   └── docker-compose.yml
-├── nginx/
-│   └── conf/nginx.conf
-├── migration.sql
-└── docker-compose.yml
-======================================================
-
 🚀 Démarrage Rapide
 
 Prérequis
@@ -115,12 +71,12 @@ Prérequis
 - Java 21+ (pour paiement)
 - Git
 
-1. Cloner le projet
+1. Cloner le projet:
 https://github.com/CHAIBNihal/smart_pdf_image_processing.git
 cd smart_pdf_image_processing
 
 
-2. Configuration de l'environnement
+2. Configuration de l'environnement:
 # .env ==> auth-service 
 PORT=3333
 DATABASE_URL=mysql://user:password@mysql:3306/db_name?connection_limit=10&pool_timeout=30&connect_timeout=10
@@ -147,18 +103,17 @@ REDIS_URL=redis://redis:6379/0
 CELERY_BROKER_URL=redis://redis:6379/1
 CELERY_RESULT_BACKEND=redis://redis:6379/2
 
-======================================================
 
-3. Démarrer avec Docker 
+
+3. Démarrer avec Docker:
 # Lancer tous les services
 docker-compose up -d
 
 # Vérifier l'état
 docker-compose ps
-======================================================
 
 
-4. Démarrer manuellement chaque service
+4. Démarrer manuellement chaque service:
 
 Service Auth
 cd auth-service
