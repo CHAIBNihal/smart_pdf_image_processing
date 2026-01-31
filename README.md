@@ -1,6 +1,6 @@
 🚀 Architecture Microservices - Plateforme Complète
 📋 Vue d'Ensemble du Projet
-Cette plateforme microservices offre une solution complète avec trois services principaux : authentification, traitement IA et paiements. Chaque service est conçu pour être indépendant, scalable et maintenable.
+Cette plateforme microservices offre une solution complète avec trois services principaux : authentification + exportation PDF/Image, traitement IA et paiements. Chaque service est conçu pour être indépendant, scalable et maintenable.
 
 ┌─────────────────────────────────────────────────────────────┐
 │                   Microservices Architecture                │
@@ -16,19 +16,18 @@ Cette plateforme microservices offre une solution complète avec trois services 
 
 🏗️ Architecture Technique
 
-
-🌐 Service d'Authentification + xportation des PDF ou Image (NestJS)
+🌐 Service d'Authentification + Exportation PDF/Image (NestJS)
 Port : 3333
 
-Gestion des utilisateurs 
+Gestion des utilisateurs et authentification
 
 JWT tokens avec refresh mechanism
 
-OAuth2 avec Supabase
+OAuth2 avec Google et Supabase
 
-Stockage S3 pour les fichiers utilisateurs
-======================================================
+Stockage S3 via Supabase Storage
 
+Exportation et traitement de fichiers PDF/Image
 
 🤖 Service IA (FastAPI)
 Port : 8000
@@ -37,9 +36,9 @@ Traitement asynchrone avec Celery
 
 File de messages Redis pour les tâches
 
-Modèles de machine learning
+Modèles de machine learning (LLM via Groq, HuggingFace)
 
-API REST pour prédictions
+API REST pour analyses et prédictions
 ======================================================
 
 
@@ -52,28 +51,48 @@ Intégration Stripe complète
 
 Webhooks Stripe sécurisés
 
-Gestion des abonnements
+Gestion des abonnements et facturation
 
+🛡️ API Gateway (NGINX)
+Port : 80/443
+
+Routeur et load balancer intelligent
+
+Sécurisation de toutes les routes
+
+Rate limiting et protection DDoS
+
+Validation JWT
+
+SSL/TLS termination
+
+Compression et caching
+
+Logging centralisé
 
 📁 Structure du Projet
+
+smart_pdf_image_processing/
 ├── auth-service/
 │   ├── src/
 │   ├── prisma/
+│   ├── .env.example
 │   ├── Dockerfile
 │   └── docker-compose.yml
 ├── ia-service/
 │   ├── analyz/
-    ├── celery/ 
-    ├── ChatModel/
-    ├── core/
+│   ├── celery/
+│   ├── ChatModel/
+│   ├── core/
 │   ├── database/
-    ├── Entity/
-    ├── extrernes_api/
-    ├── helpers/
-    ├── Redis/
-    ├── api.py
-    ├──main.py
-    ├── requirements.txt
+│   ├── Entity/
+│   ├── extrernes_api/
+│   ├── helpers/
+│   ├── Redis/
+│   ├── api.py
+│   ├── main.py
+│   ├── requirements.txt
+│   ├── .env.example
 │   ├── Dockerfile
 │   └── docker-compose.yml
 ├── payment-service/
@@ -91,8 +110,8 @@ Gestion des abonnements
 Prérequis
 # Outils requis
 - Docker & Docker Compose
-- Node.js 24+ (pour auth)
-- Python 3.14+ (pour IA)
+- Node.js 20+ (pour auth)
+- Python 3.11+ (pour IA)
 - Java 21+ (pour paiement)
 - Git
 
@@ -103,15 +122,13 @@ cd smart_pdf_image_processing
 
 2. Configuration de l'environnement
 # .env ==> auth-service 
-PORT = 3333
+PORT=3333
 DATABASE_URL=mysql://user:password@mysql:3306/db_name?connection_limit=10&pool_timeout=30&connect_timeout=10
 JWT_SECRET=your_secret_key_here
 
-GOOGLE_CLIENT_ID= your_google_clientId
-GOOGLE_SECRET=Yout_google_key 
-#mettez ce lien en votre callback lien en configuration de votre Google cloud platform
+GOOGLE_CLIENT_ID=your_google_clientId
+GOOGLE_SECRET=Your_google_key
 GOOGLE_CALLBACK_URL=http://auth-service:3333/auth/google/callback
-
 
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_secret_key
@@ -121,13 +138,11 @@ SUPABASE_STORAGE_BUCKET=your_s3_bucket_name
 
 # .env ==> ia-service 
 GROQ_API_KEY="your_LLM_model_key"
-# Si vous travaillez localement si votre db sur docker mettez le nom de container de votre db ==> mysql+pymysql://user:password@mysql:3306/db_name
-DATABASE_URL = mysql+pymysql://user:password@localhost:3306/db_name
+DATABASE_URL=mysql+pymysql://user:password@mysql:3306/db_name
 HUGGINGFACEHUB_API_TOKEN=hugging_face_api_key
 
-UPLOAD_SERVICE =http://auth-service:3333
+UPLOAD_SERVICE=http://auth-service:3333
 
-# Si  vous etes sur docker sinon metter redis://localhsot:6379/
 REDIS_URL=redis://redis:6379/0
 CELERY_BROKER_URL=redis://redis:6379/1
 CELERY_RESULT_BACKEND=redis://redis:6379/2
@@ -136,7 +151,7 @@ CELERY_RESULT_BACKEND=redis://redis:6379/2
 
 3. Démarrer avec Docker 
 # Lancer tous les services
-docker-compose -f docker-compose.full.yml up -d
+docker-compose up -d
 
 # Vérifier l'état
 docker-compose ps
