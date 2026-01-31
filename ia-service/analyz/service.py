@@ -12,7 +12,6 @@ class AnalyzService:
     
     
     def create_analyz(self, analyz: AnalyzBase, db: Session) -> models.AnalyzHistory:
-      
         try:
             db_analyz = models.AnalyzHistory(**analyz.dict())
             db.add(db_analyz)
@@ -28,39 +27,64 @@ class AnalyzService:
     
     #Récupere un seul analyz fait 
     async def get_analyz_by_id(self, analyz_id: str, db: Session) :
-        cache = await redis_service.get_cache_analyz(analyz_id=analyz_id)
-        if cache is not  None :
-            print('data cached =======>', cache) 
-            return cache
+        try:
+            cache = await redis_service.get_cache_analyz(analyz_id=analyz_id)
+            if cache is not  None :
+                print('data cached =======>', cache) 
+                return cache
 
-        analyz = db.query(models.AnalyzHistory).options(
-        joinedload(models.AnalyzHistory.chats)).filter(
-            models.AnalyzHistory.id == analyz_id
-        ).first()
-        
-        if analyz is None:
+            analyz = db.query(models.AnalyzHistory).options(
+            joinedload(models.AnalyzHistory.chats)).filter(
+                models.AnalyzHistory.id == analyz_id
+            ).first()
+            
+            if analyz is None:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Analyse avec l'ID {analyz_id} introuvable"
+                )
+            # stocker cette analyz en redis : 
+            await redis_service.cache_analyz(analyz=analyz)
+            return analyz
+        except HTTPException:
+            raise
+        except SQLAlchemyError as e:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Analyse avec l'ID {analyz_id} introuvable"
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Erreur lors de la récupération de l'analyse: {str(e)}"
             )
-        # stocker cette analyz en redis : 
-        await redis_service.cache_analyz(analyz=analyz)
-        return analyz
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Erreur serveur: {str(e)}"
+            )
     
     # Récuperer tous les analayz d'un client :
     async def get_all_analyz_by_client(self, client_id: str, db: Session) -> List[models.AnalyzHistory]:
-       
-        client_analyz = db.query(models.AnalyzHistory).filter(
-            models.AnalyzHistory.clientId == client_id
-        ).all()  # Utiliser .all() au lieu de .first() pour récupérer toutes les analyses
-        
-        if not client_analyz:
+        try:
+            client_analyz = db.query(models.AnalyzHistory).filter(
+                models.AnalyzHistory.clientId == client_id
+            ).all()  # Utiliser .all() au lieu de .first() pour récupérer toutes les analyses
+            
+            if not client_analyz:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail=f"Aucune analyse trouvée pour le client {client_id}"
+                )
+            
+            return client_analyz
+        except HTTPException:
+            raise
+        except SQLAlchemyError as e:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Aucune analyse trouvée pour le client {client_id}"
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Erreur lors de la récupération des analyses: {str(e)}"
             )
-        
-        return client_analyz
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Erreur serveur: {str(e)}"
+            )
    
    
     

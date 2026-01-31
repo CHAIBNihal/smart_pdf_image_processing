@@ -1,4 +1,4 @@
-import type { ICreateUploadResponse, IUploadFileReponse, IUserUploadsResponse } from "../../Interfaces/Upload";
+import type { ICreateUploadResponse, ISingleUploadResponse, IUploadFileReponse, IUserUploadsResponse } from "../../Interfaces/Upload";
 import http from "../http/authHttp"
 
 // const AUTH_ENDPOINT = "/auth";
@@ -35,3 +35,8 @@ export const uploadFiles = async (
 export const deleteUpload = async(id : string) : Promise<any>=>{
     return http.delete(`${UPLOAD_ENDPOINT}/delete/${id}`)
 }
+
+export const getUploadById = (id : string) : Promise<ISingleUploadResponse>=>{
+  return http.get(`${UPLOAD_ENDPOINT}/upload/${id}`)
+}
+

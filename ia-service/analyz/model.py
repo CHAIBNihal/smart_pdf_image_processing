@@ -7,8 +7,8 @@ class AnalyzBase(BaseModel):
     prompt: str
     clientId: str
     uploadId: str
-    created_at: datetime
-    updated_at: datetime
+    # created_at: datetime
+    # updated_at: datetime
 
 # Pour retourner un Analyz avec ses chats (RESPONSE)
 class AnalyzResponse(BaseModel):
@@ -23,3 +23,12 @@ class AnalyzResponse(BaseModel):
     model_config = {
         "from_attributes": True
     }
+
+class ClientAnalyseResponse(BaseModel): 
+    id: str
+    prompt: str
+    clientId: str
+    uploadId: str
+
+    created_at: datetime
+    updated_at: datetime

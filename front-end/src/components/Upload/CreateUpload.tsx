@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../Layout/Layout";
 import { createUpload } from "../../api/services/uploadService";
 import { AuthStore } from "../../Store/auth/AuthStore";
+import Header from "../Header/Header";
 
 type DocumentType = "documents" | "images";
 
@@ -46,22 +47,13 @@ const CreateUpload = () => {
 
   return (
     <Layout title="Nouveau document">
-      <div className="mx-auto p-4">
+      <div className="mx-auto p-1">
         {/* En-tête amélioré */}
-        <div className="mb-8 flex items-center gap-4">
-          {/* Correction: bg-linear-to-br -> bg-gradient-to-br */}
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-neutral-800 to-neutral-900 rounded-2xl border border-neutral-700">
-            <FcFile size={32} />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Télécharger un document
-            </h1>
-            <p className="text-slate-400">
-              Analysez votre document après le téléchargement
-            </p>
-          </div>
-        </div>
+        <Header
+          title="Télécharger un document"
+          icon={<FcFile size={32} />}
+          paragraph="Analysez votre document après le téléchargement"
+        />
 
         {/* Formulaire amélioré */}
         {/* Correction: bg-linear-to-b -> bg-linear-to-b */}
@@ -98,7 +90,7 @@ const CreateUpload = () => {
                   Ex: facture_août_2024, contrat_client, etc.
                 </span>
               </label>
-              
+
               <div className="relative">
                 <input
                   type="text"
@@ -108,23 +100,25 @@ const CreateUpload = () => {
                   onBlur={() => setIsFocused(false)}
                   placeholder="facture mois août"
                   className={`w-full bg-neutral-900/80 border ${
-                    isFocused 
-                      ? 'border-blue-500 shadow-lg shadow-blue-500/10' 
-                      : 'border-neutral-700 hover:border-neutral-600'
+                    isFocused
+                      ? "border-blue-500 shadow-lg shadow-blue-500/10"
+                      : "border-neutral-700 hover:border-neutral-600"
                   } rounded-lg px-4 py-3.5 text-white placeholder:text-slate-500 focus:outline-none transition-all duration-200`}
                   disabled={isSubmitting}
                 />
-                
+
                 {/* Indicateur de caractères */}
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                   {documentName.length > 0 && (
-                    <span className={`text-xs px-2 py-1 rounded ${
-                      documentName.length < 3 
-                        ? 'bg-red-500/20 text-red-400' 
-                        : documentName.length > 50 
-                          ? 'bg-amber-500/20 text-amber-400'
-                          : 'bg-green-500/20 text-green-400'
-                    }`}>
+                    <span
+                      className={`text-xs px-2 py-1 rounded ${
+                        documentName.length < 3
+                          ? "bg-red-500/20 text-red-400"
+                          : documentName.length > 50
+                            ? "bg-amber-500/20 text-amber-400"
+                            : "bg-green-500/20 text-green-400"
+                      }`}
+                    >
                       {documentName.length}/50
                     </span>
                   )}
@@ -145,7 +139,7 @@ const CreateUpload = () => {
               <label className="block text-slate-300 mb-3 font-medium">
                 Type du document <span className="text-red-400 ml-1">*</span>
               </label>
-              
+
               <div className="flex gap-3">
                 <button
                   type="button"
@@ -153,23 +147,23 @@ const CreateUpload = () => {
                   disabled={isSubmitting}
                   className={`flex-1 border rounded-lg px-4 py-3 text-center transition-all duration-200 ${
                     typeDocument === "documents"
-                      ? 'bg-blue-500/10 border-blue-500 text-blue-400'
-                      : 'bg-neutral-900/80 border-neutral-700 text-slate-400 hover:border-neutral-600 hover:text-slate-300'
-                  } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      ? "bg-blue-500/10 border-blue-500 text-blue-400"
+                      : "bg-neutral-900/80 border-neutral-700 text-slate-400 hover:border-neutral-600 hover:text-slate-300"
+                  } ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <div className="font-medium">Document</div>
                   <div className="text-xs mt-1 opacity-70">PDF</div>
                 </button>
-                
+
                 <button
                   type="button"
                   onClick={() => handleTypeChange("images")}
                   disabled={isSubmitting}
                   className={`flex-1 border rounded-lg px-4 py-3 text-center transition-all duration-200 ${
                     typeDocument === "images"
-                      ? 'bg-blue-500/10 border-blue-500 text-blue-400'
-                      : 'bg-neutral-900/80 border-neutral-700 text-slate-400 hover:border-neutral-600 hover:text-slate-300'
-                  } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      ? "bg-blue-500/10 border-blue-500 text-blue-400"
+                      : "bg-neutral-900/80 border-neutral-700 text-slate-400 hover:border-neutral-600 hover:text-slate-300"
+                  } ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                   <div className="font-medium">Image</div>
                   <div className="text-xs mt-1 opacity-70">JPG, PNG, GIF</div>
@@ -192,8 +186,8 @@ const CreateUpload = () => {
                 disabled={!documentName.trim() || isSubmitting}
                 className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 ${
                   !documentName.trim() || isSubmitting
-                    ? 'bg-neutral-800 text-slate-500 cursor-not-allowed'
-                    : 'bg-linear-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/20 active:scale-[0.98]'
+                    ? "bg-neutral-800 text-slate-500 cursor-not-allowed"
+                    : "bg-linear-to-r from-blue-600 to-blue-700 text-white hover:from-blue-500 hover:to-blue-600 hover:shadow-lg hover:shadow-blue-500/20 active:scale-[0.98]"
                 }`}
               >
                 {isSubmitting ? (
@@ -204,8 +198,18 @@ const CreateUpload = () => {
                 ) : (
                   <>
                     <span>Valider et continuer</span>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </>
                 )}
@@ -221,11 +225,13 @@ const CreateUpload = () => {
                 <div className="w-8 h-8 rounded-full bg-linear-to-br from-blue-600 to-blue-800 flex items-center justify-center">
                   <span className="text-white font-medium text-sm">1</span>
                 </div>
-                <span className="text-white text-sm font-medium">Informations</span>
+                <span className="text-white text-sm font-medium">
+                  Informations
+                </span>
               </div>
-              
+
               <div className="h-px flex-1 mx-4 bg-neutral-700"></div>
-              
+
               <div className="flex items-center gap-3 opacity-40">
                 <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center">
                   <span className="text-slate-400 font-medium text-sm">2</span>

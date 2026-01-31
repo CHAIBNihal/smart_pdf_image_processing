@@ -5,6 +5,7 @@ import { FiUploadCloud, FiFileText, FiImage, FiCheck, FiX, FiArrowRight } from "
 import { FcFile, FcPicture } from "react-icons/fc";
 import { uploadFiles } from "../../api/services/uploadService";
 import { AuthStore } from "../../Store/auth/AuthStore";
+import Header from "../Header/Header";
 
 const UploadFile = () => {
   const [searchParams] = useSearchParams();
@@ -144,28 +145,24 @@ const UploadFile = () => {
 
   return (
     <Layout title="Nouveau téléchargement">
-      <div className="  p-4">
+      <div className="">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-2xl border border-neutral-700">
-              <FcFile className="w-5 h-5 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold text-white">
-              Télécharger un fichier 
-            </h1>
-          </div>
-          <p className="text-slate-400">
-            {documentType === "documents" 
-              ? "Téléchargez un document PDF pour analyse" 
-              : "Téléchargez une image pour analyse"}
-          </p>
-        </div>
-
-        {/* Type Selection (if not in URL) */}
+        <Header
+          title="Télécharger un fichier"
+          paragraph={
+            documentType === "documents"
+              ? "Téléchargez un document PDF pour analyse"
+              : "Téléchargez une image pour analyse"
+          }
+          icon={<FcFile className="w-5 h-5 text-white" />}
+        />
+        ;{/* Type Selection (if not in URL) */}
         {!isTypeOnQuery && (
           <div className="mb-8">
-            <h2 className="text-lg font-semibold text-white mb-4">Choisir le type de document <span className="text-red-400">*</span></h2>
+            <h2 className="text-lg font-semibold text-white mb-4">
+              Choisir le type de document{" "}
+              <span className="text-red-400">*</span>
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <button
                 type="button"
@@ -177,12 +174,16 @@ const UploadFile = () => {
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-lg ${documentType === "documents" ? "bg-blue-500/20" : "bg-neutral-800"}`}>
+                  <div
+                    className={`p-3 rounded-lg ${documentType === "documents" ? "bg-blue-500/20" : "bg-neutral-800"}`}
+                  >
                     <FcFile className="w-8 h-8" />
                   </div>
                   <div className="text-left">
                     <div className="font-semibold text-white">Document</div>
-                    <div className="text-sm text-slate-400 mt-1">PDF uniquement</div>
+                    <div className="text-sm text-slate-400 mt-1">
+                      PDF uniquement
+                    </div>
                   </div>
                 </div>
               </button>
@@ -197,36 +198,42 @@ const UploadFile = () => {
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-lg ${documentType === "images" ? "bg-blue-500/20" : "bg-neutral-800"}`}>
+                  <div
+                    className={`p-3 rounded-lg ${documentType === "images" ? "bg-blue-500/20" : "bg-neutral-800"}`}
+                  >
                     <FcPicture className="w-8 h-8" />
                   </div>
                   <div className="text-left">
                     <div className="font-semibold text-white">Image</div>
-                    <div className="text-sm text-slate-400 mt-1">JPG, PNG, GIF, WEBP</div>
+                    <div className="text-sm text-slate-400 mt-1">
+                      JPG, PNG, GIF, WEBP
+                    </div>
                   </div>
                 </div>
               </button>
             </div>
           </div>
         )}
-
         {/* Upload Zone */}
-        <div className="bg-gradient-to-b from-neutral-900/30 to-neutral-800/20 border border-neutral-700 rounded-2xl p-6 mb-6">
+        <div className="bg-linear-to-b from-neutral-900/30 to-neutral-800/20 border border-neutral-700 rounded-2xl p-6 mb-6">
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-white mb-2">Téléchargement du fichier <span className="text-red-400">*</span></h2>
+            <h2 className="text-xl font-semibold text-white mb-2">
+              Téléchargement du fichier <span className="text-red-400">*</span>
+            </h2>
             <p className="text-slate-400 text-sm">
-              Formats acceptés :  Maximum 10MB • .png .jpg .jpeg • {getAcceptedExtensions()} 
+              Formats acceptés : Maximum 10MB • .png .jpg .jpeg •{" "}
+              {getAcceptedExtensions()}
             </p>
           </div>
 
           {/* Upload Area */}
           <div
             className={`border-3 ${
-              isDragging 
-                ? 'border-blue-500 bg-blue-500/5' 
-                : selectedFile 
-                  ? 'border-green-500/30 bg-green-500/5' 
-                  : 'border-dashed border-neutral-600'
+              isDragging
+                ? "border-blue-500 bg-blue-500/5"
+                : selectedFile
+                  ? "border-green-500/30 bg-green-500/5"
+                  : "border-dashed border-neutral-600"
             } rounded-xl p-8 text-center transition-all duration-200 mb-6`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -240,21 +247,22 @@ const UploadFile = () => {
               className="hidden"
               accept={documentType === "documents" ? ".pdf" : "image/*"}
             />
-            
+
             <div className="flex flex-col items-center justify-center">
-              <div className="mb-4">
-                {getFileIcon()}
-              </div>
-              
+              <div className="mb-4">{getFileIcon()}</div>
+
               {selectedFile ? (
                 <>
                   <div className="mb-2">
-                    <h3 className="text-lg font-medium text-white">{selectedFile.name}</h3>
+                    <h3 className="text-lg font-medium text-white">
+                      {selectedFile.name}
+                    </h3>
                     <p className="text-slate-400 text-sm mt-1">
-                      {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB • {selectedFile.type}
+                      {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB •{" "}
+                      {selectedFile.type}
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center gap-2 mt-4">
                     <button
                       type="button"
@@ -287,7 +295,9 @@ const UploadFile = () => {
                   <h3 className="text-lg font-medium text-white mb-2">
                     Glissez-déposez votre fichier ici
                   </h3>
-                  <p className="text-slate-400 mb-4">ou cliquez pour parcourir</p>
+                  <p className="text-slate-400 mb-4">
+                    ou cliquez pour parcourir
+                  </p>
                   <button
                     type="button"
                     className="px-6 py-3 bg-neutral-600 text-white rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all"
@@ -308,8 +318,8 @@ const UploadFile = () => {
                 <span>{uploadProgress}%</span>
               </div>
               <div className="w-full bg-neutral-800 rounded-full h-2">
-                <div 
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-300"
+                <div
+                  className="bg-linear-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 ></div>
               </div>
@@ -324,14 +334,15 @@ const UploadFile = () => {
                   <FiCheck className="w-5 h-5 text-green-400" />
                 </div>
                 <div>
-                  <h4 className="font-medium text-white">Fichier téléchargé avec succès</h4>
+                  <h4 className="font-medium text-white">
+                    Fichier téléchargé avec succès
+                  </h4>
                   <p className="text-slate-400 text-sm">Prêt pour l'analyse</p>
                 </div>
               </div>
             </div>
           )}
         </div>
-
         {/* Continue Button */}
         <div className="flex justify-end">
           <button
@@ -340,8 +351,8 @@ const UploadFile = () => {
             disabled={!selectedFile || uploadProgress < 100 || isAnalyzing}
             className={`px-8 py-4 rounded-xl font-medium transition-all duration-200 flex items-center gap-3 ${
               !selectedFile || uploadProgress < 100 || isAnalyzing
-                ? 'bg-neutral-800 text-slate-500 cursor-not-allowed'
-                : 'bg-purple-700 text-white hover:from-purple-500 hover:to-purple-600 hover:shadow-xl hover:shadow-green-500/20'
+                ? "bg-neutral-800 text-slate-500 cursor-not-allowed"
+                : "bg-purple-700 text-white hover:from-purple-500 hover:to-purple-600 hover:shadow-xl hover:shadow-green-500/20"
             }`}
           >
             {isAnalyzing ? (
@@ -357,10 +368,11 @@ const UploadFile = () => {
             )}
           </button>
         </div>
-
         {/* Info Box */}
         <div className="mt-8 p-4 bg-neutral-900/30 border border-neutral-700 rounded-xl">
-          <h3 className="text-sm font-semibold text-white mb-2">À propos de l'analyse</h3>
+          <h3 className="text-sm font-semibold text-white mb-2">
+            À propos de l'analyse
+          </h3>
           <ul className="text-slate-400 text-sm space-y-1">
             <li className="flex items-start gap-2">
               <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5"></div>

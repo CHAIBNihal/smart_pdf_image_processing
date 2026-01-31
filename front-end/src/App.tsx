@@ -8,6 +8,10 @@ import CreateUpload from "./components/Upload/CreateUpload";
 import UploadFile from "./components/Upload/UploadFile";
 import Uploads from "./components/Upload/Uploads";
 import SingleUpload from "./components/Upload/SingleUpload";
+import History from "./components/Analyse/History";
+import ExtraireFile from "./components/Analyse/ExtraireFile";
+import Chating from "./components/Analyse/Chating";
+import ResponseExtraction from "./components/Analyse/ResponseExtraction";
 // PUBLIC - PIVATE ROUTE:
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -74,6 +78,31 @@ function App() {
         element={
           <PrivateRoute>
             <UploadFile/>
+          </PrivateRoute>
+        }/>
+
+
+        {/** Analyse Route  /initial-session/:id?name={motif} (id==upload) */}
+        <Route path="/initial-session/:id" element={
+          <PrivateRoute>
+            <ExtraireFile/>
+          </PrivateRoute>
+        }/>
+        {/** Extraction/:id?name="prompt" (id == analyseId) */}
+        <Route path="/Extraction/:id" element={
+          <PrivateRoute>
+            <Chating/>
+          </PrivateRoute>
+        } />
+         <Route path="/history" element={
+          <PrivateRoute>
+           <History/>
+          </PrivateRoute>
+        }/>
+        <Route path="/task-result/:id" 
+        element={
+          <PrivateRoute>
+            <ResponseExtraction/>
           </PrivateRoute>
         }/>
       </Routes>

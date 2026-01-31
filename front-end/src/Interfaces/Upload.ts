@@ -7,13 +7,19 @@ export interface IUploads{
     createdAt : string;
     updatedAt : string;
 }
+export interface IUpload{
+    id : string;
+    motif : string;
+    createdAt : string;
+    updatedAt : string;
+    uploadfile : IUploadFile[]
+}
 export interface IUploadFile{
     id :string;
     upload_id :string;
     file : string;
     isLast : boolean
 }
-
 interface IUploadsUser{
     id : string;
     motif : string;
@@ -23,6 +29,9 @@ interface IUploadsUser{
     user : IUser
 }
 
+
+
+//===================Interface of Uploads apis respinse =========================
 export interface IUserUploadsResponse{
     uploads : IUploadsUser[];
     count: number
@@ -35,4 +44,9 @@ export interface ICreateUploadResponse{
 export interface IUploadFileReponse{
     message :string;
     data : IUploadFile
+}
+export interface ISingleUploadResponse{
+    message : string; 
+    success : boolean; 
+    data : IUpload
 }

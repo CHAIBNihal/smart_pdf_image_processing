@@ -11,7 +11,7 @@ class ChatBase(BaseModel) :
 class ChatResponse(BaseModel):
     id: str
     question: Optional[str] = None
-    answer: str
+    answer: Optional[str]
     analyz_history_id: str
     created_at: datetime
     updated_at: datetime

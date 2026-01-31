@@ -15,7 +15,7 @@ app = FastAPI(
     title="API d'Analyse",
     description="API pour gérer les analyses clients",
     version="1.0.0",
-    root_path="/api"  # IMPORTANT : FastAPI est servi sous /api via Nginx
+    # root_path="/api"  # IMPORTANT : FastAPI est servi sous /api via Nginx
 )
 
 
@@ -38,7 +38,7 @@ app.add_middleware(
         "Range",
     ],
     expose_headers=["Content-Length", "Content-Range"],
-    max_age=3600,  # Cache preflight requests for 1 hour
+    max_age=3600,  
 )
 
 analyz_routes(app)

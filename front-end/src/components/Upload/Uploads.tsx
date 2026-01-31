@@ -7,8 +7,7 @@ import {
   FiGrid, 
   FiList, 
   FiSearch, 
-  FiCalendar,
-  FiFileText
+  FiCalendar
 } from "react-icons/fi";
 import type { IUploads } from "../../Interfaces/Upload";
 import { AuthStore } from "../../Store/auth/AuthStore";
@@ -16,6 +15,8 @@ import { deleteUpload, getUserUpload } from "../../api/services/uploadService";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import Header from "../Header/Header";
 
 const Uploads = () => {
   const [data, setData] = useState<IUploads[]>([]);
@@ -23,7 +24,7 @@ const Uploads = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [countData, setCountData] = useState(0);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
   const [searchTerm, setSearchTerm] = useState("");
   const { user } = AuthStore();
   const navigate = useNavigate();
@@ -117,32 +118,26 @@ const Uploads = () => {
       {/* En-tête */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-blue-600/20 to-blue-800/20 rounded-2xl border border-blue-500/30">
-              <FcViewDetails size={32} />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white mb-2">
-                Mes Téléchargements
-              </h1>
-              <p className="text-slate-400">
-                {countData} document{countData > 1 ? 's' : ''} trouvé{countData > 1 ? 's' : ''}
-              </p>
-            </div>
+          <div className="mt-2">
+            <Header
+            icon={<FcViewDetails size={32} />}
+            title=" Mes Téléchargements"
+            paragraph={`${countData} document${countData > 1 ? "s" : ""} trouvé${countData > 1 ? "s" : ""}`}
+          />
           </div>
-          
+
           {/* Boutons de vue */}
-          <div className="flex items-center gap-2 bg-neutral-800/50 rounded-lg p-1">
+          <div className="flex items-center gap-2 bg-neutral-800/50 rounded-lg p-1 border border-neutral-700/50">
             <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-md transition-all ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-neutral-700'}`}
+              onClick={() => setViewMode("grid")}
+              className={`p-2 rounded-md transition-all ${viewMode === "grid" ? "bg-neutral-600 text-white" : "text-slate-400 hover:text-white hover:bg-neutral-700"}`}
               title="Vue grille"
             >
               <FiGrid size={20} />
             </button>
             <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-md transition-all ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white hover:bg-neutral-700'}`}
+              onClick={() => setViewMode("list")}
+              className={`p-2 rounded-md transition-all ${viewMode === "list" ? "bg-neutral-600 text-white" : "text-slate-400 hover:text-white hover:bg-neutral-700"}`}
               title="Vue liste"
             >
               <FiList size={20} />
@@ -153,13 +148,16 @@ const Uploads = () => {
         {/* Barre de recherche et filtres */}
         <div className="mb-6">
           <div className="relative max-w-md">
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" size={20} />
+            <FiSearch
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
+              size={18}
+            />
             <input
               type="text"
               placeholder="Rechercher par nom ou ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-neutral-900/80 border border-neutral-700 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+              className="w-full pl-10 pr-4 py-1 bg-neutral-900/80 border border-neutral-700 rounded-lg text-white placeholder:text-slate-500 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
         </div>
@@ -181,23 +179,20 @@ const Uploads = () => {
       {/* Aucune donnée */}
       {!loading && filteredData.length === 0 && (
         <div className="text-center py-12">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-neutral-800/50 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-neutral-500/50 rounded-full shadow-md shadow-neutral-900 mb-4">
             <FcFile size={48} />
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">Aucun téléchargement</h3>
-          <p className="text-slate-400 mb-6">Commencez par télécharger votre premier document</p>
-          <button
-            onClick={() => navigate('/createUpload')}
-            className="px-6 py-3 bg-linear-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all"
-          >
-            <FiFileText className="inline mr-2" />
-            Nouveau téléchargement
-          </button>
+          <h3 className="text-xl font-semibold text-slate-600 mb-2">
+            Aucun téléchargement
+          </h3>
+          <p className="text-slate-400 mb-6">
+            Commencez par télécharger votre premier document
+          </p>
         </div>
       )}
 
       {/* Vue grille */}
-      {viewMode === 'grid' && filteredData.length > 0 && (
+      {viewMode === "grid" && filteredData.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredData.map((upload) => (
             <div
@@ -210,13 +205,15 @@ const Uploads = () => {
                     <FcFile size={24} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-white truncate max-w-[200px]">
+                    <h3 className="font-semibold text-white truncate max-w-50">
                       {upload.motif}
                     </h3>
-                    <p className="text-xs text-slate-500">ID: {upload.id.substring(0, 8)}...</p>
+                    <p className="text-xs text-slate-500">
+                      ID: {upload.id.substring(0, 8)}...
+                    </p>
                   </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleViewDetails(upload.id)}
                     className="p-2 text-blue-400 hover:text-blue-300 hover:bg-blue-500/10 rounded-lg transition-colors"
@@ -233,9 +230,8 @@ const Uploads = () => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="space-y-3">
-                
                 <div className="flex items-center gap-2 text-sm text-slate-400">
                   <FiCalendar size={16} />
                   <span>{formatDate(upload.createdAt)}</span>
@@ -253,26 +249,36 @@ const Uploads = () => {
       )}
 
       {/* Vue liste */}
-      {viewMode === 'list' && filteredData.length > 0 && (
+      {viewMode === "list" && filteredData.length > 0 && (
         <div className="bg-linear-to-b from-neutral-900/30 to-neutral-800/20 border border-neutral-700 rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="bg-neutral-800/50 border-b border-neutral-700">
-                <th className="py-2 px-6 text-left text-slate-400 font-medium">ID</th>
-                  <th className="py-2 px-6 text-left text-slate-400 font-medium">Document</th>
-                  <th className="py-2 px-6 text-left text-slate-400 font-medium">Date de création</th>
-                  <th className="py-2 px-6 text-left text-slate-400 font-medium">Actions</th>
+                  <th className="py-2 px-6 text-left text-slate-400 font-medium">
+                    ID
+                  </th>
+                  <th className="py-2 px-6 text-left text-slate-400 font-medium">
+                    Document
+                  </th>
+                  <th className="py-2 px-6 text-left text-slate-400 font-medium">
+                    Date de création
+                  </th>
+                  <th className="py-2 px-6 text-left text-slate-400 font-medium">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {filteredData.map((upload, index) => (
-                  <tr 
-                    key={upload.id} 
-                    className={`border-b border-neutral-700/50 hover:bg-neutral-800/30 transition-colors ${index % 2 === 0 ? 'bg-neutral-900/20' : ''}`}
+                  <tr
+                    key={upload.id}
+                    className={`border-b border-neutral-700/50 hover:bg-neutral-800/30 transition-colors ${index % 2 === 0 ? "bg-neutral-900/20" : ""}`}
                   >
-                    <td className="py-2 px-6">
-                        <p className=" text-slate-500">{upload.id.substring(0, 12)}...</p>
+                    <td className="py-2 px-6 cursor-pointer">
+                      <p className=" text-slate-500">
+                        {upload.id.substring(0, 12)}...
+                      </p>
                     </td>
                     <td className="py-2 px-6">
                       <div className="flex items-center gap-3">
@@ -280,19 +286,22 @@ const Uploads = () => {
                           <FcFile size={20} />
                         </div>
                         <div>
-                          <p className="font-medium text-white">{upload.motif}</p>
+                          <p className="font-medium text-white">
+                            {upload.motif}
+                          </p>
                         </div>
                       </div>
                     </td>
-                    
-                    
+
                     <td className="py-2 px-6">
                       <div className="flex items-center gap-2">
                         <FiCalendar size={16} className="text-slate-500" />
-                        <span className="text-slate-300">{formatDate(upload.createdAt)}</span>
+                        <span className="text-slate-300">
+                          {formatDate(upload.createdAt)}
+                        </span>
                       </div>
                     </td>
-                   
+
                     <td className="py-2 px-6">
                       <div className="flex gap-2">
                         <button
@@ -301,7 +310,6 @@ const Uploads = () => {
                           title="Voir les détails"
                         >
                           <FiEye size={16} />
-                          <span className="text-sm">Détails</span>
                         </button>
                         <button
                           onClick={() => handleDelete(upload.id)}
@@ -309,7 +317,6 @@ const Uploads = () => {
                           title="Supprimer"
                         >
                           <FiTrash2 size={16} />
-                         
                         </button>
                       </div>
                     </td>
@@ -318,12 +325,13 @@ const Uploads = () => {
               </tbody>
             </table>
           </div>
-          
+
           {/* Pied de tableau */}
           <div className="p-4 bg-neutral-800/50 border-t border-neutral-700">
             <div className="flex items-center justify-between">
               <p className="text-slate-400 text-sm">
-                Affichage de {filteredData.length} sur {countData} document{countData > 1 ? 's' : ''}
+                Affichage de {filteredData.length} sur {countData} document
+                {countData > 1 ? "s" : ""}
               </p>
               {searchTerm && (
                 <button
@@ -342,14 +350,15 @@ const Uploads = () => {
       {filteredData.length > 0 && (
         <div className="mt-8 flex justify-between items-center">
           <div className="text-slate-400 text-sm">
-            Affichage de 1 à {filteredData.length} sur {countData} résultat{countData > 1 ? 's' : ''}
+            Affichage de 1 à {filteredData.length} sur {countData} résultat
+            {countData > 1 ? "s" : ""}
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 bg-neutral-800 text-slate-400 rounded-lg hover:bg-neutral-700 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-              Précédent
+            <button className="px-2 py-1 bg-neutral-800 text-slate-400 rounded-lg hover:bg-neutral-500 hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              <ArrowLeft size={16} />
             </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              Suivant
+            <button className="px-2 py-1 bg-neutral-600 text-white rounded-lg hover:bg-neutral-500 transition-colors">
+              <ArrowRight size={16} />
             </button>
           </div>
         </div>

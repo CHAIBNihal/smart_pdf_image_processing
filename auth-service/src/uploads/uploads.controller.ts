@@ -12,6 +12,7 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam } from '@ne
 @UseGuards(JwtGuard)
 @Controller('uploads')
 export class UploadsController {
+  
   constructor(
     private uploadsService: UploadsService,
   ) {

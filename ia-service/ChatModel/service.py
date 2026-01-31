@@ -1,10 +1,11 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
-from ChatModel.model import ChatBase
+from ChatModel.model import ChatBase, ChatResponse
 from Celery.task import analyze_pdf_task, analyz_image
 from celery.result import AsyncResult
 from Celery.celery_app import celery_app
+from Entity import Chat
 import uuid
 
 load_dotenv()
@@ -84,4 +85,14 @@ class ChatModelService:
             "status": "processing",
             "message": "L'analyse du PDF est en cours"
         }
+   
+   
+    async def get_chat(self, id:str, db : Session):
+        chat = db.get(Chat, id)
+        if chat is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f"Chat avec ID {id} non trouvé"
+            )
+        return ChatResponse.model_validate(chat)
 chat_service = ChatModelService()
