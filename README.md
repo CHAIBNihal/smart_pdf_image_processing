@@ -137,7 +137,7 @@ cd payment-service
 
 
 # 5 - Commande  Zookeeper + Kafka  
-
+# Si vous executez ces commandes les microservices ne seront pas en meme réseaux de kafka et zookeeper alors vaux mieux copier les depuis le fichier docker-compose.yml
 docker run --name zookeeper `
   -p 2181:2181 `
   -e ZOOKEEPER_CLIENT_PORT=2181 `

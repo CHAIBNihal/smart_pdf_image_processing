@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import com.paiement.Entity.*;
 import com.paiement.dto.StripeResponse;
@@ -17,12 +18,15 @@ import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 // import com.stripe.param.checkout.SessionCreateParams;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+// import lombok.AllArgsConstructor;
+// import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
+
+@Slf4j
 public class PaiementService {
 
     @Value("${stripe.secretKey}")
@@ -35,6 +39,8 @@ public class PaiementService {
     private String cancelUrl;
     @Autowired
     private PaiementRepos paiementRepos;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
 
     public StripeResponse checkout(PaiementEntity paiement) {
 
@@ -67,6 +73,12 @@ public class PaiementService {
                     .build();
 
             PaymentIntent intent = PaymentIntent.create(params);
+            // Ici on doit produit un message a distribuer pour lancer le status de paiemant
+            /* en Broker kafka avec le paiement-topic 
+             */
+            log.info("🚀 Envoie du message sur le status de initialisation de session de paiement");
+            kafkaTemplate.send("paiement-topic", PAIEMENTSTATUS.SUCCESS.toString());
+            log.info("✅ Message envoyé avec succès!");
 
             // Return clientSecret ==> (clé pour React)
             return StripeResponse.builder()
@@ -77,6 +89,7 @@ public class PaiementService {
                     .build();
 
         } catch (StripeException e) {
+              kafkaTemplate.send("paiement-topic", PAIEMENTSTATUS.FAILED.toString());
             return StripeResponse.builder()
                     .status(PAIEMENTSTATUS.FAILED)
                     .message("Erreur Stripe : " + e.getMessage())

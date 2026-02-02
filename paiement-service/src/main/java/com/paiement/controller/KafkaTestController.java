@@ -13,7 +13,6 @@ public class KafkaTestController {
     // Injection du KafkaTemplate
     private final KafkaTemplate<String, String> kafkaTemplate;
     
-    // Constructor injection (recommandé)
     @Autowired
     public KafkaTestController(KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;

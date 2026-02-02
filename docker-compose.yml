@@ -42,6 +42,34 @@ services:
     networks:
       - app-network
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - app-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+      
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - app-network
+
+
 
   redis:
     image: redis:7-alpine
@@ -106,6 +134,9 @@ services:
     container_name: auth-prisma-migrate
     environment:
       DATABASE_URL: mysql://fastapi:fastapi123@mysql:3306/testapp
+      KAFKA_BROKERS: kafka:9092  
+      KAFKA_CLIENT_ID: nestjs-consumer
+      KAFKA_GROUP_ID: auth-consumer-group
     depends_on:
       mysql:
         condition: service_healthy
@@ -126,6 +157,9 @@ services:
       - "3333:3333"
     environment:
       DATABASE_URL: mysql://fastapi:fastapi123@mysql:3306/testapp
+      KAFKA_BROKERS: kafka:9092  
+      KAFKA_CLIENT_ID: nestjs-consumer
+      KAFKA_GROUP_ID: auth-consumer-group
       PORT: 3333
       JWT_SECRET: super_secret_key_123
       GOOGLE_CLIENT_ID: 133693604786-u95a96cvo2kcjc2k8ogt9hvp8hh03h68.apps.googleusercontent.com
@@ -138,14 +172,14 @@ services:
       mysql:
         condition: service_healthy
       prisma_migrate:
-        condition: service_completed_successfully  # ⭐ Attend que la migration soit terminée
+        condition: service_completed_successfully  
     volumes:
       - ./auth-service:/app
       # - /app/node_modules  # ⭐ Exclut node_modules
     networks:
       - app-network
     sysctls:
-    - net.ipv6.conf.all.disable_ipv6=1  # ⭐ Désactive IPv6
+    - net.ipv6.conf.all.disable_ipv6=1  
     - net.ipv6.conf.default.disable_ipv6=1
     - net.ipv6.conf.lo.disable_ipv6=1
 
