@@ -2,7 +2,7 @@ package com.paiement.Entity;
 
 
 import java.time.LocalDate;
-import java.util.UUID;
+
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
@@ -14,7 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;

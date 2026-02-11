@@ -1,16 +1,18 @@
 // src/kafka/kafka-consumer.service.ts
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { Kafka, Consumer, EachMessagePayload } from 'kafkajs';
-import { kafkaConfig } from '../config/kafka.config';
+import {UserService} from "../user/user.service"
+import { kafkaConfig } from './config/kafka.config';
 
 @Injectable()
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
   private kafka: Kafka;
   private consumer: Consumer;
 
-  constructor() {
+  constructor(private  userService: UserService) {
     this.kafka = new Kafka(kafkaConfig);
     this.consumer = this.kafka.consumer({ groupId: kafkaConfig.groupId });
+    
   }
 
   async onModuleInit() {
@@ -24,7 +26,8 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 
   private async connect() {
     await this.consumer.connect();
-    console.log('✅ Kafka consumer connected');
+
+    console.log('✅ Fucking Kafka consumer is  connected======>', kafkaConfig.brokers);
   }
 
   private async disconnect() {
@@ -48,6 +51,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 
   private async handleMessage(topic: string, partition: number, message: any) {
     try {
+    
       if (!message.value) {
         console.warn(`⚠️ Message vide reçu sur ${topic}`);
         return;
@@ -95,24 +99,29 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 
   private async handlePaiementTopic(data: any) {
     console.log('💳 Paiement event reçu:', data);
+    console.log("Type Of data received", typeof data)
 
-    if (typeof data !== 'object') {
-      console.warn('Format inattendu pour paiement-topic');
-      return;
+    if (typeof data !== 'object' || !data.eventMessage) {
+      console.warn('Format inattendu pour paiement-topic', data);
     }
+    let sit = false;
 
-    switch (data) {
+    switch (data.eventMessage) {
       case 'SUCCESS':
+        sit=true
+        
         console.log('✅ Paiement confirmé');
         break;
 
       case 'FAILED':
+        sit=false
         console.log('❌ Paiement échoué');
         break;
 
       default:
         console.log('⏳ Paiement en attente...');
     }
+   await this.userService.changeSit(data.clientId, sit);
   }
 
   // Souscription dynamique

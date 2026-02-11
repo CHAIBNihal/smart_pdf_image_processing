@@ -1,14 +1,15 @@
 package com.paiement.services;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import com.paiement.Entity.*;
+import com.paiement.dto.KafkaEventDto;
+
 import com.paiement.dto.StripeResponse;
-import com.paiement.dto.SuccessEditeDto;
 import com.paiement.Enumuration.PAIEMENTSTATUS;
 import com.paiement.Repository.PaiementRepos;
 import com.stripe.Stripe;
@@ -39,13 +40,16 @@ public class PaiementService {
     private String cancelUrl;
     @Autowired
     private PaiementRepos paiementRepos;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, KafkaEventDto> kafkaTemplate;
 
 
+    // Create Stripe paiement session :
     public StripeResponse checkout(PaiementEntity paiement) {
-
+        if(secretKey == null){
+            log.info("No Secret Stripe key is found");
+        }
         Stripe.apiKey = secretKey;
-
+        log.info("Secrey Key is ======>" + secretKey);
         if (paiement.getAmount() < 200) {
             return StripeResponse.builder()
                     .status(PAIEMENTSTATUS.FAILED)
@@ -63,22 +67,12 @@ public class PaiementService {
             PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                     .setAmount(amountInCents)
                     .setCurrency("usd")
-                    .setAutomaticPaymentMethods(
-                            PaymentIntentCreateParams.AutomaticPaymentMethods
-                                    .builder()
-                                    .setEnabled(true)
-                                    .build())
+                    .addPaymentMethodType("card")
                     .putMetadata("paiementId", savedPaiement.getId().toString())
                     .putMetadata("clientId", savedPaiement.getClientId())
                     .build();
 
             PaymentIntent intent = PaymentIntent.create(params);
-            // Ici on doit produit un message a distribuer pour lancer le status de paiemant
-            /* en Broker kafka avec le paiement-topic 
-             */
-            log.info("🚀 Envoie du message sur le status de initialisation de session de paiement");
-            kafkaTemplate.send("paiement-topic", PAIEMENTSTATUS.SUCCESS.toString());
-            log.info("✅ Message envoyé avec succès!");
 
             // Return clientSecret ==> (clé pour React)
             return StripeResponse.builder()
@@ -87,9 +81,7 @@ public class PaiementService {
                     .clientSecret(intent.getClientSecret())
                     .paiementData(savedPaiement)
                     .build();
-
         } catch (StripeException e) {
-              kafkaTemplate.send("paiement-topic", PAIEMENTSTATUS.FAILED.toString());
             return StripeResponse.builder()
                     .status(PAIEMENTSTATUS.FAILED)
                     .message("Erreur Stripe : " + e.getMessage())
@@ -97,53 +89,39 @@ public class PaiementService {
         }
     }
 
-    public SuccessEditeDto editeStatus(String id, PAIEMENTSTATUS status) {
-        try {
-            if (id == null) {
-                return SuccessEditeDto.builder()
-                        .status(false)
-                        .paiementData(null)
-                        .error("Id is required")
-                        .message("Erreur en récupération des données")
-                        .build();
 
-            }
-            System.out.println("id est " + id);
 
-            PaiementEntity paiement = null;
-        try {
-            paiement = paiementRepos.findById(id).orElse(null);
-            System.out.println("Recherche terminée" + paiement);
-        } catch (Exception e) {
-            System.err.println("Erreur lors de findById: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
-        }
-            System.out.println("is est trouvable");
-            if (paiement == null) {
-                return SuccessEditeDto.builder()
-                        .status(false)
-                        .paiementData(null)
-                        .error("Payement est Introuvable!")
-                        .build();
-            }
-            System.out.println("Paiement founded===>" + paiement);
-            paiement.setStatus(status);
 
-            // Save changes
-            PaiementEntity updatedPaiement = paiementRepos.save(paiement);
-            System.out.println("Updated paiement: " + updatedPaiement);
+public void handleSuccessfulPayment(PaymentIntent intent) {
 
-            return SuccessEditeDto.builder()
-                    .message("status est changer par success!")
-                    .paiementData(updatedPaiement)
-                    .status(true)
-                    .build();
-        } catch (Exception e) {
-            return SuccessEditeDto.builder()
-                    .message("Erreur: " + e.getMessage())
-                    .status(false)
-                    .build();
-        }
+    String paiementId = intent.getMetadata().get("paiementId");
+    String clientId = intent.getMetadata().get("clientId");
+
+    PaiementEntity paiement = paiementRepos.findById(paiementId).orElse(null);
+
+    if (paiement == null) {
+        log.error("Paiement introuvable pour ID {",  paiementId, "}");
+        return;
     }
+    
+    LocalDate start = LocalDate.now(); 
+    LocalDate end = start.plusDays(30);
+    paiement.setStatus(PAIEMENTSTATUS.SUCCESS);
+    paiementRepos.save(paiement);
+
+    // EVENT KAFKA POUR AUTH SERVICE
+    KafkaEventDto event = KafkaEventDto.builder()
+            .eventMessage("SUCCESS")
+            .clientId(clientId)
+            .paiementId(paiementId)
+            .start_date(start.toString())
+            .end_date(end.toString())
+            .amount(paiement.getAmount())
+            .build();
+
+    log.info("📤 Envoi SUCCESS vers Kafka pour client {}", clientId);
+    kafkaTemplate.send("paiement-topic", event);
+}
+
+
 }

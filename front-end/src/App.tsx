@@ -12,6 +12,7 @@ import History from "./components/Analyse/History";
 import ExtraireFile from "./components/Analyse/ExtraireFile";
 import Chating from "./components/Analyse/Chating";
 import ResponseExtraction from "./components/Analyse/ResponseExtraction";
+import Billing from "./components/Facturation/Billing";
 // PUBLIC - PIVATE ROUTE:
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -103,6 +104,13 @@ function App() {
         element={
           <PrivateRoute>
             <ResponseExtraction/>
+          </PrivateRoute>
+        }/>
+
+        {/** Facturation routes */}
+        <Route path="/billing" element={
+          <PrivateRoute>
+            <Billing/>
           </PrivateRoute>
         }/>
       </Routes>

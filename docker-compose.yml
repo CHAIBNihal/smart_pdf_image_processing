@@ -56,16 +56,20 @@ services:
       - zookeeper
     ports:
       - "9092:9092"
+      - "29092:29092"
     environment:
+     
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
-      
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,PLAINTEXT_INTERNAL://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
+
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+
     networks:
       - app-network
 
@@ -134,7 +138,7 @@ services:
     container_name: auth-prisma-migrate
     environment:
       DATABASE_URL: mysql://fastapi:fastapi123@mysql:3306/testapp
-      KAFKA_BROKERS: kafka:9092  
+      KAFKA_BROKERS: kafka:29092  
       KAFKA_CLIENT_ID: nestjs-consumer
       KAFKA_GROUP_ID: auth-consumer-group
     depends_on:
@@ -157,7 +161,7 @@ services:
       - "3333:3333"
     environment:
       DATABASE_URL: mysql://fastapi:fastapi123@mysql:3306/testapp
-      KAFKA_BROKERS: kafka:9092  
+      KAFKA_BROKERS: kafka:29092
       KAFKA_CLIENT_ID: nestjs-consumer
       KAFKA_GROUP_ID: auth-consumer-group
       PORT: 3333
@@ -175,7 +179,6 @@ services:
         condition: service_completed_successfully  
     volumes:
       - ./auth-service:/app
-      # - /app/node_modules  # ⭐ Exclut node_modules
     networks:
       - app-network
     sysctls:
@@ -183,38 +186,36 @@ services:
     - net.ipv6.conf.default.disable_ipv6=1
     - net.ipv6.conf.lo.disable_ipv6=1
 
-  ##############Zookeeper Container###########
-  # zookeeper:
-  #   image: confluentinc/cp-zookeeper:7.5.0
-  #   container_name: zookeeper
-  #   ports:
-  #     - "2181:2181"
-  #   environment:
-  #     ZOOKEEPER_CLIENT_PORT: 2181
-  #     ZOOKEEPER_TICK_TIME: 2000
-  #   networks:
-  #     - app-network
 
-  ##############Kafka Container###########
-  # kafka:
-  #   image: confluentinc/cp-kafka:7.5.0
-  #   container_name: kafka
-  #   ports: 
-  #     - "9092:9092"
-  #   environment:
-  #     KAFKA_BROKER_ID: 1
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-  #     KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-  #     KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  #     KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-  #   depends_on:
-  #     - zookeeper
-  #   volumes:
-  #     - kafka_data:/var/lib/kafka/data
-  #   networks:
-  #     - app-network
+  paiement-service:
+    build:
+      context: ./paiement-service
+    container_name: paiement-service
+
+    ports:
+     - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/paieapp
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+      STRIPE_SECRET_KEY: sk_test_51SucKq6NAPzORUWnAvyQ4hUql5IUSMan8ZzioijMidOl38tmpUkLMop4f7qs55U0aScy6JfueHjDVa8T0P4COW7F00UG9EPL9k
+      STRIPE_SUCCESS_URL: http://localhost:3000/successUrl
+      STRIPE_CANCEL_URL: http://localhost:3000/cancelUrl
+      STRIPE_WEBHOOK_SECRET: whsec_3670183fa0e1417f6d86426262445481eea01af6189793cb3343e42e50d93f07
+
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+
+    depends_on:
+      mysql:
+         condition: service_healthy
+      kafka:
+         condition: service_started
+
+    networks:
+      - app-network
+
+
 
 networks:
   app-network:

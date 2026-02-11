@@ -29,8 +29,8 @@ cryptography
 
 # =============== LLM / Embeddings =====
 groq>=0.30.0,<1.0.0  # ← CHANGER ICI
-sentence-transformers==5.2.0
-torch==2.9.1
+# sentence-transformers==5.2.0
+# torch==2.9.1
 transformers==4.57.3
 #=============Pic analys Package =========
 pytesseract==0.3.13

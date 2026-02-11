@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-# Installer PyTorch CPU-only (plus léger)
+
 RUN pip install --timeout=100 --no-cache-dir -r requirements.txt
 
 COPY . .
